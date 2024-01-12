@@ -21,7 +21,6 @@ class Deezer(Generator):
 	    Aggiungiamo GraphIstance a self.dataset.instances
     """
 
-    #deezer_ego_nets
     def init(self):
         #we pass the local_config (with check_configuration()) before calling init()
         base_path = self.local_config['parameters']['data_dir']
@@ -53,7 +52,6 @@ class Deezer(Generator):
             lines = f.readlines()
             for line in lines:
                 # line="1, 2" -> [1, 2]
-                # instance = [[int(num) for num in line.split(' ')] for line in f]
 
                 # Split the line
                 nodes = line.split(', ')
@@ -89,15 +87,9 @@ class Deezer(Generator):
     def check_configuration(self):
         #manage our default params here (that's an ugly part of GRETEL)
         super().check_configuration()
-        local_config= self.local_config #field of master class which contains necessary params
-        
-        local_config['parameters']['num_instances'] = local_config['parameters'].get('num_instances', 1000)  #if not specified in config file it's 1000 by default, otherwise it takes it from config file (it's like a python dict)
-        local_config['parameters']['num_nodes_per_instance']=local_config['parameters'].get('num_nodes_per_instance', 2)
-        local_config['parameters']['infinity_cycle_length']=local_config['parameters'].get('infinity_cycle_length', 6)
-
-        assert(int(local_config['parameters']['infinity_cycle_length']) // 2 >= 3)   #otherwise you can't have an ifinity-shaped cycle
-        #we need int above cause float // int doesn't make sense
-
+        if not self.local_config['parameters']['data_dir']:
+            self.local_config['parameters']['data_dir'] = 'data/deezer_ego_nets'
+      
 
 
 
