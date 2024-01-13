@@ -45,7 +45,7 @@ class Deezer(Generator):
                 # Get the graph indicator
                 graphId=int(line)
                 # Add the graph indicator to the graph_ind array
-                graph_ind.append(graphId)
+                graph_ind=np.append(graph_ind,graphId)
 
         # Read deezer_ego_nets_A.txt
         with open(self.local_config['parameters']['data_dir'] + '/deezer_ego_nets_A.txt') as f:
@@ -60,11 +60,11 @@ class Deezer(Generator):
                 # Get the second node
                 node2 = int(nodes[1])
                 # Get the graph indicator
-                graph_indicator = graph_ind[node1]
+                graph_indicator = graph_ind[node1-1]
 
                 # Add the edge to the graph
-                graphs[graph_indicator].append([node1,node2])
-        
+                graphs[graph_indicator]=np.append(graphs[graph_indicator],[node1,node2])
+        print(graphs[1].shape)
         labels = np.array([])
         
         # Read deezer_ego_nets_graph_labels.txt
@@ -75,12 +75,12 @@ class Deezer(Generator):
                 # Get the label
                 label=int(line)
                 # Add the label to the labels array
-                labels.append(label)
+                labels=np.append(labels,label)
 
         # Iterate through the graphs
         for i in np.arange(1, 9630):
-        
-            self.dataset.instances.append(GraphInstance(id=i, data=graphs[i], label=labels[i]))
+            # graphs is a dictionary with key [1,9.629], while labels is an array with index [0,9.628]
+            self.dataset.instances.append(GraphInstance(id=i, data=graphs[i], label=labels[i-1]))
 
 
 
