@@ -128,7 +128,7 @@ class Evaluator(ABC):
             for metric in self._evaluation_metrics:
                 if(metric._special):
                     val, counterfactual = metric.evaluate(inst, None, self._oracle,self._explainer,self._data)
-                    self._results[Context.get_fullname(metric)].append(val)
+                    self._results[Context.get_fullname(metric)].append({"id":str(inst.id),"value":val})
                     self._explanations.append(counterfactual)
 
             self._real_evaluate(inst, counterfactual,self._oracle,self._explainer,self._data)
@@ -148,10 +148,18 @@ class Evaluator(ABC):
         for metric in self._evaluation_metrics:
             if(not metric._special):        
                 m_result = metric.evaluate(instance, counterfactual, oracle, explainer,dataset)
-                self._results[Context.get_fullname(metric)].append(m_result)
+                self._results[Context.get_fullname(metric)].append({"id":str(instance.id),"value":m_result})
 
 
     def write_results(self,fold_id):
+        hash_info = {"scope":self._scope,
+                      "dataset":self._data.name,
+                      "oracle":self._oracle.name,
+                      "explainer":self._explainer.name
+                      }
+        
+        self._complete['hash_ids']=hash_info
+
         output_path = os.path.join(self._results_store_path, self._scope)
         if not os.path.exists(output_path):
             os.mkdir(output_path)

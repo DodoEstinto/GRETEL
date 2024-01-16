@@ -131,7 +131,7 @@ dmypy.json
 .pyre/
 
 # data folders
-data/cache/*
+data/cache*
 output/
 stats/
 AAAI/
@@ -143,3 +143,4 @@ config/_papers
 
 # Testing files
 main_test.py
+da_test.py
