@@ -82,10 +82,13 @@ class Deezer(Generator):
                 labels=np.append(labels,label)
 
         # Iterate through the graphs
-        for i in np.arange(1, 9630):
+        for i in np.arange(1, 100): #9630  #TODO: cambiare in 9630
             # graphs is a dictionary with key [1,9.629], while labels is an array with index [0,9.628]
             data=self.create_adj_mat(graphs[i])
-            self.dataset.instances.append(GraphInstance(id=i, data=data, label=labels[i-1]))
+            self.dataset.instances.append(GraphInstance(id=i, data=data, label=labels[i-1], graph_features={"pippo": 1}))
+        
+        self.dataset.graph_features_map = {"graph_causality": "pippo"}
+        print(self.dataset.graph_features_map)
 
     def create_adj_mat(self, data):
             adj_list = np.asarray(data)
