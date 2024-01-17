@@ -480,5 +480,4 @@ class CLEARDataset(TorchDataset):
     def to_geometric(self, instance: GraphInstance, label=0):   
         adj, x, label = super().to_geometric(instance, label)
         causality = torch.from_numpy(np.array(instance.graph_features[instance._dataset.graph_features_map["graph_causality"]]))
-
         return adj, x, label, causality

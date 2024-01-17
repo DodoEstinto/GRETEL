@@ -66,8 +66,8 @@ class Deezer(Generator):
                 graph_indicator = graph_ind[node1-1]
                 # Add the edge to the graph
                 graphs[graph_indicator]=np.vstack([graphs[graph_indicator],[node1,node2]])
-        print(graphs[1].shape)
-        print(graphs[1])
+        #print(graphs[1].shape)
+        #print(graphs[1])
         
         labels = np.array([])
         
@@ -85,11 +85,16 @@ class Deezer(Generator):
         for i in np.arange(1, 100): #9630  #TODO: cambiare in 9630
             # graphs is a dictionary with key [1,9.629], while labels is an array with index [0,9.628]
             data=self.create_adj_mat(graphs[i])
-            self.dataset.instances.append(GraphInstance(id=i, data=data, label=labels[i-1], graph_features={"pippo": 1}))
+            self.dataset.instances.append(GraphInstance(id=i, data=data, label=labels[i-1], graph_features={"pippo": 1}, dataset=self.dataset))
         
         self.dataset.graph_features_map = {"graph_causality": "pippo"}
-        print(self.dataset.graph_features_map)
-
+        # print("QUI CI ARRIVO\n\n")
+        # tmp=self.dataset.instances[0]
+        # print(tmp.graph_features)
+        # print(tmp._dataset.graph_features_map["graph_causality"])
+        # print(tmp.graph_features[tmp._dataset.graph_features_map["graph_causality"]])
+        # print("FINE PRINT\n\n")
+        
     def create_adj_mat(self, data):
             adj_list = np.asarray(data)
             min_node = adj_list.min()
