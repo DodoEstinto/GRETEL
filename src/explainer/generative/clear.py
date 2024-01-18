@@ -110,6 +110,7 @@ class CLEARExplainer(Trainable, Explainer):
                 ########################################################
                 self.optimizer.zero_grad()
                 # forward pass
+
                 retr = self.model(features, causality, adj, labels)
                 # z_cf
                 z_mu_cf, z_logvar_cf = self.model.encoder(

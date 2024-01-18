@@ -25,6 +25,7 @@ class Deezer(Generator):
         #we pass the local_config (with check_configuration()) before calling init()
         self.base_path = self.local_config['parameters']['data_dir']
         self._max_nodes = self.local_config['parameters']['max_nodes']
+        #self.dataset.node_features_map={"node_causality":self._max_nodes}
         print("Init Dataset Deezer")
         self.generate_dataset()
 
@@ -85,15 +86,8 @@ class Deezer(Generator):
         for i in np.arange(1, 100): #9630  #TODO: cambiare in 9630
             # graphs is a dictionary with key [1,9.629], while labels is an array with index [0,9.628]
             data=self.create_adj_mat(graphs[i])
-            self.dataset.instances.append(GraphInstance(id=i, data=data, label=labels[i-1], graph_features={"pippo": 1}, dataset=self.dataset))
-        
-        self.dataset.graph_features_map = {"graph_causality": "pippo"}
-        # print("QUI CI ARRIVO\n\n")
-        # tmp=self.dataset.instances[0]
-        # print(tmp.graph_features)
-        # print(tmp._dataset.graph_features_map["graph_causality"])
-        # print(tmp.graph_features[tmp._dataset.graph_features_map["graph_causality"]])
-        # print("FINE PRINT\n\n")
+            self.dataset.instances.append(GraphInstance(id=i, data=data, label=int(labels[i-1])))
+        self.dataset.node_features_map={"node_causality":self._max_nodes}
         
     def create_adj_mat(self, data):
             adj_list = np.asarray(data)
