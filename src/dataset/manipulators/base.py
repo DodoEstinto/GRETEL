@@ -14,8 +14,24 @@ class BaseManipulator(Configurable):
         self._process()
          
     def _process(self):
+        # i=0
+        # for instance in self.dataset.instances:
+        #     if i==0:
+        #         node_features_map = self.node_info(instance)
+        #         print("\n\nECCOMI\n\n")
+        #         print(node_features_map)
+        #         print("\n\n")
+        #         i=i+1
+        #         edge_features_map = self.edge_info(instance)
+        #         graph_features_map = self.graph_info(instance)
+        i=0        
         for instance in self.dataset.instances:
             node_features_map = self.node_info(instance)
+            # if i==0:
+            #     print("\n\nECCOMI\n\n")
+            #     print(node_features_map)
+            #     print("\n\n")
+            #     i+=1
             edge_features_map = self.edge_info(instance)
             graph_features_map = self.graph_info(instance)
             self.manipulate_features_maps((node_features_map, edge_features_map, graph_features_map))
@@ -85,4 +101,4 @@ class BaseManipulator(Configurable):
                 index = dataset_map[key]
                 features[:, index] = curr_map[key]
                             
-        return features
+        return features 

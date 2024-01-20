@@ -25,13 +25,11 @@ class Deezer(Generator):
         #we pass the local_config (with check_configuration()) before calling init()
         self.base_path = self.local_config['parameters']['data_dir']
         self._max_nodes = self.local_config['parameters']['max_nodes']
+        #self.dataset.node_features_map={"node_causality":self._max_nodes}
+        #self.dataset.node_features_map = {"is_lab_0":0, "is_lab_1":1, "is_lab_2":2}
+        self.dataset.node_features_map.update({f"feat{i}":i for i in range(0,16)})
         print("Init Dataset Deezer")
         self.generate_dataset()
-
-    
-
-    def get_num_instances(self):
-        return len(self.dataset.instances)
 
     def generate_dataset(self):
         graphs = {}
@@ -82,18 +80,11 @@ class Deezer(Generator):
                 labels=np.append(labels,label)
 
         # Iterate through the graphs
-        for i in np.arange(1, 100): #9630  #TODO: cambiare in 9630
+        for i in np.arange(1, 300): #9630  #TODO: cambiare in 9630
             # graphs is a dictionary with key [1,9.629], while labels is an array with index [0,9.628]
             data=self.create_adj_mat(graphs[i])
-            self.dataset.instances.append(GraphInstance(id=i, data=data, label=labels[i-1], graph_features={"pippo": 1}, dataset=self.dataset))
-        
-        self.dataset.graph_features_map = {"graph_causality": "pippo"}
-        # print("QUI CI ARRIVO\n\n")
-        # tmp=self.dataset.instances[0]
-        # print(tmp.graph_features)
-        # print(tmp._dataset.graph_features_map["graph_causality"])
-        # print(tmp.graph_features[tmp._dataset.graph_features_map["graph_causality"]])
-        # print("FINE PRINT\n\n")
+            self.dataset.instances.append(GraphInstance(id=i, data=data, label=int(labels[i-1])))
+        #self.dataset.graph_features_map={"node_causality":self._max_nodes}
         
     def create_adj_mat(self, data):
             adj_list = np.asarray(data)
@@ -114,14 +105,17 @@ class Deezer(Generator):
                 i1,i2=int(i[0]),int(i[1])
                 mat[i1,i2] = 1
                 mat[i2,i1] = 1
-
+    
             return mat
+    
+    # def get_num_instances(self):
+        # return len(self.dataset.instances)
 
-    def check_configuration(self):
-        #manage our default params here (that's an ugly part of GRETEL)
-        super().check_configuration()
-        if not self.local_config['parameters']['data_dir']:
-            self.local_config['parameters']['data_dir'] = 'data/deezer_ego_nets'
+    # def check_configuration(self):
+    #     #manage our default params here (that's an ugly part of GRETEL)
+    #     super().check_configuration()
+    #     if not self.local_config['parameters']['data_dir']:
+    #         self.local_config['parameters']['data_dir'] = 'data/deezer_ego_nets'
       
 
 
