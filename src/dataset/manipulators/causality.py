@@ -9,7 +9,6 @@ class Causality(BaseManipulator):
         self.causalities = self._calc_causalities() 
         #TODO Configuration of the Maniupalators affect the dataset signature: it must be invoked before performing the signature on the dataset
         # actually it doe not work properly with the defaults. This courrent above (init here the self.causalities) is a workaround.
-    
 
     def node_info(self, instance):
         u = int(self.causalities[instance.id])
@@ -24,7 +23,6 @@ class Causality(BaseManipulator):
     def _calc_causalities(self):
         splt = np.linspace(0.15, 1.0, num=self.causality_dim_choice + 1)
         self.min_1, self.max_1 = splt[:self.causality_dim_choice], splt[1:]
-
         return { instance.id:np.random.choice(self.causality_dim_choice) for instance in self.dataset.instances }
 
     

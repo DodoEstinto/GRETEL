@@ -51,8 +51,9 @@ class TorchDataset(Dataset):
             new_instance = GraphInstance(id=instance.id,
                                         label=instance.label,
                                         data=padded_adj,
-                                        dataset=instance._dataset,
-                                        graph_features=instance.graph_features)
+                                        dataset=instance._dataset
+                                        #,graph_features=instance.graph_features
+                                        )
             # redo the manipulators
             instance._dataset.manipulate(new_instance)
             instances[i] = new_instance
