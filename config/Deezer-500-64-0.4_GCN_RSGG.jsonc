@@ -28,7 +28,7 @@
         "oracle": {
           "class": "src.oracle.nn.torch.OracleTorch",
           "parameters": {
-              "epochs": 1000,
+              "epochs": 1500,
               "batch_size": 128,
               "optimizer": {
                   "class": "torch.optim.AdamW",

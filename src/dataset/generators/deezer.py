@@ -26,8 +26,8 @@ class Deezer(Generator):
         self.base_path = self.local_config['parameters']['data_dir']
         self._max_nodes = self.local_config['parameters']['max_nodes']
         #self.dataset.node_features_map={"node_causality":self._max_nodes}
-        #self.dataset.node_features_map = {"is_lab_0":0, "is_lab_1":1, "is_lab_2":2}
-        self.dataset.node_features_map.update({f"feat{i}":i for i in range(0,16)})
+        self.dataset.node_features_map = {"feat0":0}
+        self.dataset.node_features_map.update({f"feat{i}":i for i in range(1,150)})
         print("Init Dataset Deezer")
         self.generate_dataset()
 
@@ -80,7 +80,7 @@ class Deezer(Generator):
                 labels=np.append(labels,label)
 
         # Iterate through the graphs
-        for i in np.arange(1, 300): #9630  #TODO: cambiare in 9630
+        for i in np.arange(1, 9630): #9630  #TODO: cambiare in 9630
             # graphs is a dictionary with key [1,9.629], while labels is an array with index [0,9.628]
             data=self.create_adj_mat(graphs[i])
             self.dataset.instances.append(GraphInstance(id=i, data=data, label=int(labels[i-1])))

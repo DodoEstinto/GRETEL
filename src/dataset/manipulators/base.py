@@ -99,6 +99,6 @@ class BaseManipulator(Configurable):
                 
             for key in curr_map:
                 index = dataset_map[key]
-                features[:index] = curr_map[key]
+                features[:,index] = curr_map[key]
                             
         return features 
