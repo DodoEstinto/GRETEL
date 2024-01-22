@@ -90,7 +90,7 @@ class Deezer(Generator):
         mean= np.mean(graph_lens)
         print("Mean graph len: ", mean)
 
-        cut= mean+(maxLen-mean)/2
+        cut= mean+(maxLen-mean)/10
         cutNumbers=0
         # Iterate through the graphs
         for i in np.arange(1, 9630): #9630  #TODO: cambiare in 9630
