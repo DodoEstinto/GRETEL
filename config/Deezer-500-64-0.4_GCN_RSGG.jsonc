@@ -28,8 +28,8 @@
         "oracle": {
           "class": "src.oracle.nn.torch.OracleTorch",
           "parameters": {
-              "epochs": 1500,
-              "batch_size": 128,
+              "epochs": 1500, //1500
+              "batch_size": 128, //128
               "optimizer": {
                   "class": "torch.optim.AdamW",
                   "parameters": {
@@ -86,11 +86,13 @@
         }
       ],
 
-    "explainers": [{"class": "src.explainer.generative.clear.CLEARExplainer","parameters":
-    { "epochs": 100, "lr": 1e-2, "weight_decay":0,
-    "lambda_cfe": 0.1, // 0.1 i, 0.3, 0.5
-    "alpha": 0.8, // 0.2, 0.4 i, 0.6, 0.8
-    "batch_size_ratio": 0.15 }}],
+    "explainers": [{"class": "src.explainer.search.i_rand.IRandExplainer","parameters":
+    { "p":0.1,
+    "t":5
+    //"lambda_cfe": 0.1, // 0.1 i, 0.3, 0.5
+    //"alpha": 0.8, // 0.2, 0.4 i, 0.6, 0.8
+    //"batch_size_ratio": 0.15 
+    }}],
     //"explainers": [{"class": "src.explainer.generative.gcountergan.GCounteRGAN","parameters":{"epochs": 150, "batch_size": 32}}],
     "compose_mes" : "config/snippets/default_metrics.json",
     "compose_strs" : "config/snippets/default_store_paths.json"
