@@ -95,7 +95,9 @@ class Deezer(Generator):
         # Iterate through the graphs
         for i in np.arange(1, 9630): #9630  #TODO: cambiare in 9630
             # graphs is a dictionary with key [1,9.629], while labels is an array with index [0,9.628]
-            if(len(graphs[i])>=cut):
+            graphMax=graphs[i].max()
+            graphMin=graphs[i].min()
+            if(graphMax-graphMin>=cut):
                 cutNumbers+=1
                 continue
             data=self.create_adj_mat(graphs[i])
