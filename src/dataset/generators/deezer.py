@@ -91,6 +91,7 @@ class Deezer(Generator):
         print("Mean graph len: ", mean)
 
         cut= mean+(maxLen-mean)/10
+        self._max_nodes=int(cut)+1
         cutNumbers=0
         # Iterate through the graphs
         for i in np.arange(1, 9630): #9630  #TODO: cambiare in 9630
