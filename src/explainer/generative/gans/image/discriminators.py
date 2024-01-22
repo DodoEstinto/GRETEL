@@ -53,7 +53,7 @@ class SimpleDiscriminator(nn.Module):
 
     def init_run(self):
         with torch.no_grad():
-            dummy_input = torch.randn((1,1, self.num_nodes, self.num_nodes)).to(self.device)
+            dummy_input = torch.randn((1,1, self.num_nodes, self.num_nodes)).to("cpu")
             x = self.conv3(self.conv2(self.conv1(dummy_input)))
         return x.shape[-1]
 
