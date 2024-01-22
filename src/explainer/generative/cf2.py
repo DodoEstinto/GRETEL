@@ -137,7 +137,7 @@ class ExplainModelGraph(torch.nn.Module):
         return mask
 
     def get_masked_adj(self, weights):
-        sym_mask = torch.sigmoid(self.mask)
+        sym_mask = torch.sigmoid(self.mask).to("cpu")
         sym_mask = (sym_mask + sym_mask.t()) / 2
         masked_adj = weights * sym_mask
         return masked_adj
