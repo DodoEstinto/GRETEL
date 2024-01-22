@@ -79,11 +79,28 @@ class Deezer(Generator):
                 # Add the label to the labels array
                 labels=np.append(labels,label)
 
+        graph_lens = []
+        for i in np.arange(1,9630):
+            graph_lens.append(graphs[i].max()-graphs[i].min())
+
+        maxLen=max(graph_lens)
+        print("Max graph len: ", maxLen)
+        print("Min graph len: ", min(graph_lens))
+        #print mean with np.mean
+        mean= np.mean(graph_lens)
+        print("Mean graph len: ", mean)
+
+        cut= mean+(maxLen-mean)/2
+        cutNumbers=0
         # Iterate through the graphs
         for i in np.arange(1, 9630): #9630  #TODO: cambiare in 9630
             # graphs is a dictionary with key [1,9.629], while labels is an array with index [0,9.628]
+            if(len(graphs[i])>=cut):
+                cutNumbers+=1
+                continue
             data=self.create_adj_mat(graphs[i])
             self.dataset.instances.append(GraphInstance(id=i, data=data, label=int(labels[i-1])))
+        print(cutNumbers)
         #self.dataset.graph_features_map={"node_causality":self._max_nodes}
         
     def create_adj_mat(self, data):
