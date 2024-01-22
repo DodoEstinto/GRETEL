@@ -27,7 +27,7 @@ class Deezer(Generator):
         self._max_nodes = self.local_config['parameters']['max_nodes']
         #self.dataset.node_features_map={"node_causality":self._max_nodes}
         self.dataset.node_features_map = {"feat0":0}
-        self.dataset.node_features_map.update({f"feat{i}":i for i in range(1,150)})
+        self.dataset.node_features_map.update({f"feat{i}":i for i in range(1,500)})
         print("Init Dataset Deezer")
         self.generate_dataset()
 
