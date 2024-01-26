@@ -24,8 +24,8 @@ class Deezer(Generator):
     def init(self):
         #we pass the local_config (with check_configuration()) before calling init()
         self.base_path = self.local_config['parameters']['data_dir']
-        self._max_nodes = self.local_config['parameters']['max_nodes']
-        #self.dataset.node_features_map={"node_causality":self._max_nodes}
+        self.maxNodes = self.local_config['parameters']['max_nodes']
+        #self.dataset.node_features_map={"node_causality":self.maxNodes}
         self.dataset.node_features_map = {"feat0":0}
         self.dataset.node_features_map.update({f"feat{i}":i for i in range(1,500)})
         print("Init Dataset Deezer")
@@ -52,7 +52,6 @@ class Deezer(Generator):
         with open(self.base_path + '/deezer_ego_nets_A.txt') as f:
             lines = f.readlines()
             for line in lines:
-                # line="1, 2" -> [1, 2]
 
                 # Split the line
                 nodes = line.split(', ')
@@ -79,48 +78,51 @@ class Deezer(Generator):
                 # Add the label to the labels array
                 labels=np.append(labels,label)
 
-        graph_lens = []
+        graphLens = []
         for i in np.arange(1,9630):
-            graph_lens.append(graphs[i].max()-graphs[i].min())
+            graphLens.append(graphs[i].max()-graphs[i].min())
 
-        maxLen=max(graph_lens)
-        print("Max graph len: ", maxLen)
-        print("Min graph len: ", min(graph_lens))
+        maxLen=max(graphLens)
+        #print("Max graph len: ", maxLen)
+        #print("Min graph len: ", min(graphLens))
         #print mean with np.mean
-        mean= np.mean(graph_lens)
-        print("Mean graph len: ", mean)
+        mean= np.mean(graphLens)
+        #print("Mean graph len: ", mean)
 
         cut= mean+(maxLen-mean)/10
-        self._max_nodes=int(cut)+1
+        self.maxNodes=int(cut)
         cutNumbers=0
         # Iterate through the graphs
         for i in np.arange(1, 9630): #9630  #TODO: cambiare in 9630
             # graphs is a dictionary with key [1,9.629], while labels is an array with index [0,9.628]
             graphMax=graphs[i].max()
             graphMin=graphs[i].min()
-            if(graphMax-graphMin>=cut):
+            if(graphMax-graphMin>=int(cut)):
                 cutNumbers+=1
                 continue
-            data=self.create_adj_mat(graphs[i])
+            data=self.createAdjMat(np.asarray(graphs[i]))
             self.dataset.instances.append(GraphInstance(id=i, data=data, label=int(labels[i-1])))
-        print(cutNumbers)
-        #self.dataset.graph_features_map={"node_causality":self._max_nodes}
-        
-    def create_adj_mat(self, data):
-            adj_list = np.asarray(data)
-            min_node = adj_list.min()
-            max_node = adj_list.max()
-            adj_list = (adj_list - min_node).T
+        #print(cutNumbers)
 
-            min_node = min_node - 1 
-            nodes = max_node - min_node
+        
+    def createAdjMat(self, data):
+        
+            maxNode = data.max()
+            minNode = data.min()
+            
+            adjList = (data - minNode).T
+
+            minNode = minNode - 1 
+            nodes = maxNode - minNode
 
             #should not happens
-            if nodes > self._max_nodes:
+            if nodes > self.maxNodes:
                 return None
 
-            mat = np.zeros((self._max_nodes, self._max_nodes), dtype=np.int32)
-            edges=zip(adj_list[0],adj_list[1])
+            #prepare the adjacency matrix
+            mat = np.zeros((self.maxNodes, self.maxNodes), dtype=np.int32)
+            edges=zip(adjList[0],adjList[1])
+            # Iterate through the edges
             for i in edges:
                 i1,i2=int(i[0]),int(i[1])
                 mat[i1,i2] = 1

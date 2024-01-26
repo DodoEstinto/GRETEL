@@ -132,7 +132,7 @@ dmypy.json
 
 # data folders
 data/cache*
-output/
+output/logs/
 stats/
 AAAI/
 config/_papers
