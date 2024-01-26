@@ -35,13 +35,13 @@ class Bernoulli(Sampler):
     def __sample(self, instance: GraphInstance, features, probabilities):
         adj = torch.bernoulli(probabilities)
         features = pad_features(features, adj.shape[0])            
-        selected_edges = torch.nonzero(adj)
+        selected_edges = torch.nonzero(adj).cpu()
         
         cf_candidate = GraphInstance(id=instance.id,
                                      label=1-instance.label,
-                                     data=adj.numpy(),
+                                     data=adj.cpu().numpy(),
                                      node_features=features,
-                                     edge_weights=probabilities[selected_edges[:, 0], selected_edges[:, 1]].numpy())
+                                     edge_weights=probabilities[selected_edges[:, 0], selected_edges[:, 1]].cpu().numpy())
         
         instance._dataset.manipulate(cf_candidate)
      

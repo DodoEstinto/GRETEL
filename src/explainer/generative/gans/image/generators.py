@@ -77,6 +77,7 @@ class ResGenerator(nn.Module):
         return x.shape[-1]
 
     def forward(self, graph):
+        graph = graph.to("cuda")
         x = self.act(self.conv1(graph))
         x = self.dropout(x)
         x = self.act(self.conv2(x))

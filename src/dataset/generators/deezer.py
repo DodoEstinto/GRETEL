@@ -91,14 +91,14 @@ class Deezer(Generator):
         print("Mean graph len: ", mean)
 
         cut= mean+(maxLen-mean)/10
-        self._max_nodes=int(cut)+1
+        self._max_nodes=int(cut)
         cutNumbers=0
         # Iterate through the graphs
         for i in np.arange(1, 9630): #9630  #TODO: cambiare in 9630
             # graphs is a dictionary with key [1,9.629], while labels is an array with index [0,9.628]
             graphMax=graphs[i].max()
             graphMin=graphs[i].min()
-            if(graphMax-graphMin>=cut):
+            if(graphMax-graphMin>=int(cut)):
                 cutNumbers+=1
                 continue
             data=self.create_adj_mat(graphs[i])
