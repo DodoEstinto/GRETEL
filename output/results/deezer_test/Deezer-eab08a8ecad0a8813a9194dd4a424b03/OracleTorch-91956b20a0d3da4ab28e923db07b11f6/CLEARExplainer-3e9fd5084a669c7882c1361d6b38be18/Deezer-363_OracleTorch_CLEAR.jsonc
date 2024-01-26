@@ -53,48 +53,18 @@
                 }
               }
             }
-
-            //BEST CONFIGURATION SO FAR -> 0.6953
-            // "parameters": {
-            //   "epochs": 300,
-            //   "batch_size": 128,
-            //   "optimizer": {
-            //       "class": "torch.optim.AdamW",
-            //       "parameters": {
-            //           "lr":1e-2, 
-            //           "weight_decay":0
-            //       }
-            //     },
-            //   "loss_fn": {
-            //       "class": "torch.nn.CrossEntropyLoss",
-            //       "parameters": {     
-            //         "reduction":"mean"
-            //       }
-            //     },
-            //   "model": {
-            //     "class": "src.oracle.nn.gcn.DownstreamGCN",
-            //     "parameters": {
-            //       "num_conv_layers":1,
-            //       "num_dense_layers":3, // 1, 2, 3
-            //       "conv_booster":3, // 1, 2, 3
-            //       "linear_decay":2.5 // 1.6, 1.8, 2, 2.2
-            //     }
-            //   }
-            // }
-
           }
         }
       ],
 
-    "explainers": [{"class": "src.explainer.generative.cf2.CF2Explainer","parameters":
-      { "epochs": 100,
-      //,"lr": 1e-4 , "weight_decay":0,
-      //"lambda_cfe": 0.1, // 0.1 i, 0.3, 0.5
-      "alpha": 0.2// 0.2, 0.4 i, 0.6, 0.8
-  
-     //"batch_size": 2 
-     }}],
-    //"explainers": [{"class": "src.explainer.generative.gcountergan.GCounteRGAN","parameters":{"epochs": 150, "batch_size": 32}}],
+    "explainers": [{"class": "src.explainer.generative.clear.CLEARExplainer","parameters":
+      { "epochs": 250, "lr": 1e-2, "weight_decay":0,
+      //"alpha": 5 // 4.8, 5, 5.1 , 5.2, 0.2,0.9  Better results with default values
+      //"batch_size": 2,4,6,8
+      "dropout": 0.3,
+      "hdim": 12, //8 ,10, 12
+      "zdim": 12 // 8,10,12
+}}],
     "compose_mes" : "config/snippets/default_metrics.json",
     "compose_strs" : "config/snippets/default_store_paths.json"
 }
