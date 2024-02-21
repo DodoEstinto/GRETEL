@@ -63,8 +63,7 @@ class Deezer(Generator):
                 graph_indicator = graph_ind[node1-1]
                 # Add the edge to the graph
                 graphs[graph_indicator]=np.vstack([graphs[graph_indicator],[node1,node2]])
-        #print(graphs[1].shape)
-        #print(graphs[1])
+
         
         labels = np.array([])
         
@@ -78,31 +77,11 @@ class Deezer(Generator):
                 # Add the label to the labels array
                 labels=np.append(labels,label)
 
-        graphLens = []
-        for i in np.arange(1,9630):
-            graphLens.append(graphs[i].max()-graphs[i].min())
-
-        maxLen=max(graphLens)
-        #print("Max graph len: ", maxLen)
-        #print("Min graph len: ", min(graphLens))
-        #print mean with np.mean
-        mean= np.mean(graphLens)
-        #print("Mean graph len: ", mean)
-
-        cut= mean+(maxLen-mean)/10
-        self.maxNodes=int(cut)
-        cutNumbers=0
         # Iterate through the graphs
-        for i in np.arange(1, 9630): #9630  #TODO: cambiare in 9630
+        for i in np.arange(1, 9630): #9630
             # graphs is a dictionary with key [1,9.629], while labels is an array with index [0,9.628]
-            graphMax=graphs[i].max()
-            graphMin=graphs[i].min()
-            if(graphMax-graphMin>=int(cut)):
-                cutNumbers+=1
-                continue
             data=self.createAdjMat(np.asarray(graphs[i]))
             self.dataset.instances.append(GraphInstance(id=i, data=data, label=int(labels[i-1])))
-        #print(cutNumbers)
 
         
     def createAdjMat(self, data):
